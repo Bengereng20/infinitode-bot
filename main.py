@@ -15,7 +15,7 @@ import maps
 pytesseract.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
 pyautogui.PAUSE = 0.1
 
-# Set up canstants
+# Set up constants
 PATH = 'images/'
 IMAGE_SUFFIX = '.png'
 DEFAULT_WAIT_TIME = 0.1
@@ -326,9 +326,13 @@ def farm_1(this_map=maps.farm_1.copy()):
             # If the object is max level, remove it from the tasks list
             if this_object[cell]['level'] == _info['max_level']:
                 # If this is the last tower of this type in tasks, remove all this type from towers_order list
-                if task['object_type'] == 'tower' and [ x for x in tasks if tasks[x]['object'] == task['object'] ] == []:
+                if task['object_type'] == 'tower' and len([ x for x in tasks if tasks[x]['object'] == task['object'] ]) == 1:
                     towers_order = [tower for tower in towers_order if tower != task['object']]
+                    print('Removed', task['object'], 'from towers_order list')
+                    print('towers_order:', towers_order)
                 tasks.pop(cell)
+                print('Task', task['object'], 'removed from tasks list')
+                print('tasks:', tasks)
             else:
                 task['type'] = 'upgrade'
                 task['cost'] = get_upgrade_cost()
