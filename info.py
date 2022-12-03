@@ -1,87 +1,88 @@
-unlocked_towers = ['base', 'sniper', 'cannot', 'freese', 'antiair', 'splesh', 'blast', 'multi', 'minigun', 'venom', 'tesla', 'rocket', 'flamethrower']
+unlocked_towers = ['base', 'sniper', 'cannot', 'freese', 'antiair', 'splesh', 'blast', 'multi', 'minigun', 'venom', 'tesla', 'rocket', 'flamethrower', 'laser']
 towers = {
     'base': {
         'hotkey': '3',
         'cost': 39,
-        'upgrade_costs': [1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000],
         'max_level': 10,
+        'num_upgrades': [],
     },
     'sniper': {
         'hotkey': '4',
         'cost': 54,
         'num_upgrades': ['num1', 'num2', 'num5'],
-        'upgrade_costs': [1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000],
         'max_level': 10,
     },
     'cannot': {
         'hotkey': '5',
         'cost': 46,
-        'upgrade_costs': [1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000],
         'max_level': 10,
+        'num_upgrades': [],
     },
     'freese': {
         'hotkey': '6',
         'cost': 71,
         'num_upgrades': ['num1', 'num2', 'num6'],
-        'upgrade_costs': [19, 32, 51, 79, 126, 197, 305, 493, 799, 1269],
         'max_level': 10,
     },
     'anti_air': {
         'hotkey': 'e',
         'cost': 33,
-        'num_upgrades': ['num1', 'num3', 'num6'],
-        'upgrade_costs': [1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000],
+        'num_upgrades': ['num1', 'num2', 'num6'],
         'max_level': 10,
     },
     'splesh': {
         'hotkey': 'r',
         'cost': 66,
-        'upgrade_costs': [1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000],
         'max_level': 10,
+        'num_upgrades': [],
     },
     'blast': {
         'hotkey': 't',
         'cost': 57,
-        'upgrade_costs': [1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000],
         'max_level': 10,
+        'num_upgrades': [],
     },
     'multi': {
         'hotkey': 'y',
         'cost': 74,
-        'upgrade_costs': [1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000],
         'max_level': 10,
+        'num_upgrades': [],
     },
     'minigun': {
         'hotkey': 'd',
         'cost': 93,
-        'upgrade_costs': [1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000],
-        'max_level': 10,
+        'max_level': 9,
+        'num_upgrades': [],
     },
     'venom': {
         'hotkey': 'f',
         'cost': 82,
-        'upgrade_costs': [1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000],
         'max_level': 10,
+        'num_upgrades': [],
     },
     'tesla': {
         'hotkey': 'g',
         'cost': 78,
         'num_upgrades': ['num1', 'num2', 'num6'],
-        'upgrade_costs': [25, 37, 65, 103, 141, 232, 352, 512, 846, 1175],
         'max_level': 10,
     },
     'rocket': {
         'hotkey': 'h',
         'cost': 123,
-        'upgrade_costs': [1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000],
         'max_level': 10,
+        'num_upgrades': [],
     },
     'flamethrower': {
         'hotkey': 'c',
         'cost': 71,
         'num_upgrades': ['num3', 'num1', 'num6'],
-        'upgrade_costs': [19, 27, 54, 77, 115, 202, 272, 413, 775, 1222],
         'max_level': 10,
+    },
+    'laser': {
+        'hotkey': 'v',
+        'cost': 52,
+        'max_level': 10,
+        'num_upgrades': ['num3', 'num1', 'num6'],
     },
 }
 mods = {
@@ -93,7 +94,7 @@ mods = {
     'search': {
         'hotkey': ['ctrl', '4'],
         'costs': [50, 150, 225],
-        'max_level': 1,
+        'max_level': 0,
     },
     'power': {
         'hotkey': ['ctrl', '5'],
@@ -117,9 +118,9 @@ mods = {
     },
     'reward': {
         'hotkey': ['ctrl', 't'],
-        'costs': [720, 1240, 2120, 3640, 6250, 10750],
+        'costs': [720, 1240, 2120, 3640, 6250, 10750, 18450, 31650],
         'percent': 2,
-        'max': 70,
+        'max': 87,
         'max_level': 0,
     },
 }
