@@ -286,7 +286,7 @@ def farm(this_map=maps.main.copy()):
 
 
         task_counter = 0
-        while len(tasks_keys) > 0 and available_coins >= tasks[tasks_keys[0]]['cost'] and task_counter < 10:
+        while len(tasks_keys) > 0 and task_counter < 10:
             # Get the first task
             cell = tasks_keys[0]
             task = tasks[tasks_keys[0]]
