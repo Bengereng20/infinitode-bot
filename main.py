@@ -287,11 +287,11 @@ def farm(this_map=maps.main.copy()):
 
         task_counter = 0
         while len(tasks_keys) > 0 and available_coins >= tasks[tasks_keys[0]]['cost'] and task_counter < 10:
-            task_counter += 1
             # Get the first task
             cell = tasks_keys[0]
             task = tasks[tasks_keys[0]]
 
+            if available_coins <= task['cost']: break # If there are not enough coins to build or upgrade the next object, break the loop
             if towers_order[0] != task['object'] and task['object_type'] == 'tower':
                 tasks_keys.pop(0)
                 continue   
@@ -347,6 +347,7 @@ def farm(this_map=maps.main.copy()):
 
             tasks_keys = list(tasks.keys())
             tasks_keys.sort(key=lambda x: tasks[x]['cost'])
+            task_counter += 1
 
 
         print('Coins: '+str(coins))
