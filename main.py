@@ -1,6 +1,3 @@
-#create bot for game 'infinitode 2'
-
-import decimal
 import math
 import winsound
 import numpy as np
@@ -8,7 +5,7 @@ import pyautogui
 import keyboard
 import time
 import random
-import os, sys, inspect
+import os
 import cv2, mss
 import pytesseract
 import info
@@ -18,9 +15,9 @@ pytesseract.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tess
 pyautogui.PAUSE = 0.01
 
 # Set up constants
-# Get window info
 WINF = os.popen('wmic path win32_desktopmonitor get screenheight, screenwidth').read()
-PATH = 'images/'
+PATH_TO_IMAGES = 'images/'
+PATH_TO_LOG = 'log/'
 IMAGE_SUFFIX = '.png'
 DEFAULT_WAIT_TIME = 0.01
 
@@ -69,7 +66,7 @@ def find_image(image_name,
                wait_duration=5, find_interval=0.1, grayscale=True, confidence=0.9, click=True, button='left',
                clicks=1, wait_time_after_click=DEFAULT_WAIT_TIME, click_duration=0.1, interval=0, region=None,
                if_not_found='exit'): # Or 'exit' or a function
-    image = PATH + image_name + IMAGE_SUFFIX
+    image = PATH_TO_IMAGES + image_name + IMAGE_SUFFIX
     start_time = time.monotonic()
     while True:
         localtion = pyautogui.locateOnScreen(image, grayscale=grayscale, confidence=confidence, region=region)
@@ -135,18 +132,18 @@ def get_upgrade_cost(left=1859, top=908, width=61, height=22):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     # read the value
     value = pytesseract.image_to_string(gray, config='--psm 6 --oem 3 -c tessedit_char_whitelist=0123456789 ,')
-    value = value.replace(',', '')
-    value = value.replace(' ', '')
     print('Upgrade cost: ', value)
-    # Show the image
-    # cv2.imshow('image', gray)
-    # print(value)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
-    # exit()
+    value = value.replace(' ', '')
     try:
         value = int(value)
     except:
+        # Log image and value to log directory
+        _image_name = f'upgrade_cost_{time.strftime("%Y%m%d_%H%M%S", time.localtime())}.png'
+        cv2.imwrite(os.path.join(PATH_TO_LOG, _image_name), img)
+        with open(os.path.join(PATH_TO_LOG, 'upgrade_cost.txt'), 'r') as f:
+            text = f.read()
+        with open(os.path.join(PATH_TO_LOG, 'upgrade_cost.txt'), 'w') as f:
+            f.write(text + f'Upgrade cost: {value} at {_image_name}/n')
         value = 1000000000
     return value
 
@@ -158,7 +155,7 @@ def update_offset(rtb, _rewards, _offset, value, offset_multiplier):
         _offset = _offset+value*offset_multiplier
     return _offset
 
-def farm(this_map=maps.main.copy()):
+def farm(this_map=maps.main):
     find_image('level_redactor')
     _region =  [0, 0, 1920, 1080]
     for _ in range(this_map['ordinal_number'] - 1):
@@ -233,15 +230,14 @@ def farm(this_map=maps.main.copy()):
         }
 
 
-    core_upgrades = ['uc1', 'uc2', 'uc3', 'uc4', 'uc5', 'uc6', 'uc7', 'uc8', 'uc9', 'uc10', 'uc11', 'uc12', 'uc13', 'uc14', 'uc15', 'uc16']
+    core_upgrades = this_map['core_upgrades'].copy()
 
     # Press cntrl+space to start the game
     press_key(['ctrl', 'space'])
-    # Loop until the game is over
+    
     while True:
         # Are we in the game?
         # if not find_image('game_on_taskbar', wait_duration=3, if_not_found='nothing'): ... TODO
-        # If the game is over
         
         # Check if the core(is the cell 1) needs to be upgraded
         if len(core_upgrades) > 0:
@@ -284,9 +280,9 @@ def farm(this_map=maps.main.copy()):
         tasks_keys = list(tasks.keys())
         tasks_keys.sort(key=lambda x: tasks[x]['cost'])
 
-
         task_counter = 0
-        while len(tasks_keys) > 0 and task_counter < 10:
+        last_cell = None
+        while len(tasks_keys) > 0 and task_counter < 20:
             # Get the first task
             cell = tasks_keys[0]
             task = tasks[tasks_keys[0]]
@@ -298,7 +294,10 @@ def farm(this_map=maps.main.copy()):
 
             available_coins -= task['cost']
             offset = update_offset(rewards_to_build, rewards, offset, task['cost'], this_map['offset_multiplier'])
-            click(grid[cell], wait_time_after_click=0.01)
+            if last_cell != cell:
+                click(grid[cell])
+                last_cell = cell
+            
             if task['object_type'] == 'tower':
                 _info = info.towers[task['object']]
                 this_object = towers
@@ -329,7 +328,7 @@ def farm(this_map=maps.main.copy()):
                 task['type'] = 'upgrade'
 
             elif task['type'] == 'upgrade':
-                press_key('shift')
+                press_key('shift', wait_time_after_press=0.0001)
                 this_object[cell]['level'] += 1
 
             # If the object is max level, remove it from the tasks list
@@ -338,11 +337,11 @@ def farm(this_map=maps.main.copy()):
                 if task['object_type'] == 'tower' and len([ x for x in tasks if tasks[x]['object'] == task['object'] ]) == 1:
                     towers_order = [tower for tower in towers_order if tower != task['object']]
                 tasks.pop(cell)
-
-            task['cost'] = get_upgrade_cost()
+            else:
+                task['cost'] = get_upgrade_cost()
 
             if task['object_type'] == 'tower':
-                for key in towers_info[task['object']]['settings'][ this_object[cell]['level'] ]:
+                for key in towers_info[ task['object'] ]['settings'][ this_object[cell]['level'] ]:
                     press_key(key, wait_time_after_press=0)
 
             tasks_keys = list(tasks.keys())
@@ -354,13 +353,13 @@ def farm(this_map=maps.main.copy()):
         print('Offset: '+str(offset))
 
         
-        # Let's go on the list of towers and upgrade their num upgrades
-        for tower in first_towers:
-            click(grid[first_towers[tower]])
-            for upgrade in info.towers[tower]['num_upgrades']:
-                press_key(['ctrl', upgrade], 1, 0, 0)
+        if task_counter < 20:
+            # Let's go on the list of towers and upgrade their num upgrades
+            for tower in first_towers:
+                click(grid[first_towers[tower]])
+                for upgrade in info.towers[tower]['num_upgrades']:
+                    press_key(['ctrl', upgrade], 1, 0, 0)
 
 if __name__ == '__main__':
-    # test
     find_image('game_on_taskbar')
     farm()

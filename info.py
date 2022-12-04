@@ -103,12 +103,12 @@ mods = {
     },
     'damage': {
         'hotkey': ['ctrl', '6'],
-        'costs': [100, 150, 225, 335, 510],
+        'costs': [100, 150, 225, 335, 510, 760, 1140],
         'max_level': 0,
     },
     'attack_speed': {
         'hotkey': ['ctrl', 'e'],
-        'costs': [100, 150, 225, 335, 510],
+        'costs': [100, 150, 225, 335, 510, 760, 1140],
         'max_level': 0,
     },
     'mining_speed': {
