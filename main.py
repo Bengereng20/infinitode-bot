@@ -15,7 +15,7 @@ pytesseract.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tess
 pyautogui.PAUSE = 0.01
 
 # Set up constants
-WINF = os.popen('wmic path win32_desktopmonitor get screenheight, screenwidth').read()
+# WINF = os.popen('wmic path win32_desktopmonitor get screenheight, screenwidth').read()
 PATH_TO_IMAGES = 'images/'
 PATH_TO_LOG = 'log/'
 IMAGE_SUFFIX = '.png'
@@ -143,7 +143,7 @@ def get_upgrade_cost(left=1859, top=908, width=61, height=22):
         with open(os.path.join(PATH_TO_LOG, 'upgrade_cost.txt'), 'r') as f:
             text = f.read()
         with open(os.path.join(PATH_TO_LOG, 'upgrade_cost.txt'), 'w') as f:
-            f.write(text + f'Upgrade cost: {value} at {_image_name}/n')
+            f.write(text + f'Upgrade cost: {value} at {_image_name}\n')
         value = 1000000000
     return value
 
