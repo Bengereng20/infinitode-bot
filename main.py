@@ -17,7 +17,7 @@ pyautogui.PAUSE = 0.01
 # Set up constants
 # WINF = os.popen('wmic path win32_desktopmonitor get screenheight, screenwidth').read()
 PATH_TO_IMAGES = 'images/'
-PATH_TO_LOG = 'log/'
+PATH_TO_LOG = 'logs/'
 IMAGE_SUFFIX = '.png'
 DEFAULT_WAIT_TIME = 0.01
 
@@ -123,7 +123,7 @@ def get_coin_value(coin_image_name):
         value = 0
     return value
 
-def get_upgrade_cost(left=1859, top=908, width=61, height=22):
+def get_upgrade_cost(left=1859, top=903, width=61, height=32):
     region = {'top': top, 'left': left, 'width': width, 'height': height}
     # screen capture
     with mss.mss() as sct:
